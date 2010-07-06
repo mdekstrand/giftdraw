@@ -3,4 +3,4 @@ _build
 *~
 *.byte
 *.native
-*.lst
+*.cfg
