@@ -12,8 +12,9 @@ let rec parse_block = parser
   | [< >] -> []
 
 let rec parse_uspec = parser
-  | [< 'Kwd "person"; 'String name; (users, blocks) = parse_uspec >] ->
-      name::users, blocks
+  | [< 'Kwd "person"; 'String name; 'String email;
+       (users, blocks) = parse_uspec >] ->
+      (name,email)::users, blocks
   | [< blocks = parse_block >] ->
       [], blocks
   | [< >] -> [], []
@@ -21,7 +22,9 @@ let rec parse_uspec = parser
 let users, blocks = Stream.of_channel Legacy.stdin
   |> make_lexer ["person"; "block"] |> parse_uspec
 
-let igraph = List.enum users /@ (fun u -> (u,S.singleton u))
+let email = List.enum users |> M.of_enum
+
+let igraph = List.enum users /@ (fun (u,_) -> (u,S.singleton u))
   |> M.of_enum
 let igraph = List.enum blocks |> fold
   (fun b (u1,u2) ->
@@ -36,7 +39,7 @@ let users =
     let c1 = S.cardinal (M.find u1 igraph) in
     let c2 = S.cardinal (M.find u2 igraph) in
     compare c2 c1 in
-  List.sort ~cmp users
+  List.sort ~cmp (List.map fst users)
 
 let rec seed_random inch =
   try Random.init (input_binary_int inch)
