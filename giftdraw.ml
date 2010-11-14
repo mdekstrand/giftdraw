@@ -1,3 +1,26 @@
+(* Copyright © 2010 Michael Ekstrand.
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files
+ * (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *)
+
 open Batteries_uni
 open Genlex
 
@@ -77,19 +100,19 @@ let print_name emails (u,recip) =
 let _ = Arg.handle commands
 
 let users, blocks = Stream.of_channel Legacy.stdin
-  |> make_lexer ["person"; "block"] |> parse_uspec
+    |> make_lexer ["person"; "block"] |> parse_uspec
 
 let email = List.enum users |> M.of_enum
 
 let igraph = List.enum users /@ (fun (u,_) -> (u,S.singleton u))
-  |> M.of_enum
+    |> M.of_enum
 let igraph = List.enum blocks |> fold
-  (fun b (u1,u2) ->
-    let s1 = M.find u1 b in
-    let s2 = M.find u2 b in
-    let b' = M.add u1 (S.add u2 s1) b in
-    M.add u2 (S.add u1 s2) b')
-  igraph
+    (fun b (u1,u2) ->
+      let s1 = M.find u1 b in
+      let s2 = M.find u2 b in
+      let b' = M.add u1 (S.add u2 s1) b in
+      M.add u2 (S.add u1 s2) b')
+    igraph
 
 let users =
   let cmp u1 u2 =
