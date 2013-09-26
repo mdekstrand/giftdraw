@@ -1,0 +1,22 @@
+name:                giftdraw
+version:             0.1.0.0
+synopsis:            draw naems for gifts
+-- description:         
+homepage:            http://elehack.net
+license:             MIT
+-- license-file:        LICENSE
+author:              Michael Ekstrand
+maintainer:          michael@elehack.net
+copyright:           Michael Ekstrand
+category:            Utilities
+build-type:          Simple
+cabal-version:       >=1.8
+
+executable giftdraw
+  main-is:              giftdraw.hs
+  build-depends:
+    base >= 4 && < 5,
+    text, process, template,
+    cmdargs >= 0.10,
+    random-fu >= 0.2,
+    parsec >= 3.1

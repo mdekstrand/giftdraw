@@ -1,6 +1,3 @@
 syntax: glob
-_build
 *~
-*.byte
-*.native
-*.cfg
+dist
