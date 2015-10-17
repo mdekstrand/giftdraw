@@ -78,13 +78,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('file', metavar='FILE', help='load from FILE')
     ap.add_argument ('-t', '--template', metavar='FILE',
-                     help='load template from FILE',
+                     help='load email template from FILE',
                      dest='template', default='email.txt')
     ap.add_argument('-v', '--verbose', action='store_true', dest='verbose',
                     default=False)
     ap.add_argument('-c', '--config', dest='config', default='giftdraw.cfg',
                     help='specify configuration file for giftdraw operation')
-    ap.add_argument('--send-to', dest='send_to')
+    ap.add_argument('--send-to', dest='send_to', metavar='EMAIL',
+                    help='send all messages to EMAIL instead of recipient (for debugging)')
     args = ap.parse_args()
     config = ConfigParser()
     config.read(args.config)
