@@ -1,2 +1,2 @@
-/dist
-/cabal-dev
+/node_modules
+/typings

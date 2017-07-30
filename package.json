@@ -1,0 +1,24 @@
+{
+  "name": "giftdraw",
+  "version": "0.0.1",
+  "description": "Draw names for gift exchanges",
+  "main": "giftdraw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdekstrand/giftdraw.git"
+  },
+  "author": "Michael Ekstrand <md@ekstrandom.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mdekstrand/giftdraw/issues"
+  },
+  "homepage": "https://github.com/mdekstrand/giftdraw#readme",
+  "dependencies": {
+    "mailgun": "^0.5.0",
+    "yaml-js": "^0.2.0",
+    "yargs": "^8.0.2"
+  }
+}
