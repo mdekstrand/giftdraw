@@ -73,6 +73,7 @@ def send_mails(alloc, template, config, send_to=None, verbose=True):
     sender = mbsec['sender']
     subject = config['mail']['subject']
     cc = config['mail'].get('cc')
+    reply = config['mail'].get('reply')
     for giver, recip in alloc:
         if verbose:
             print("{} giving to {}".format(giver, recip))
@@ -83,6 +84,8 @@ def send_mails(alloc, template, config, send_to=None, verbose=True):
                   "to": [actual_recip],
                   "subject": subject,
                   "text": mail}
+        if reply is not None:
+            params['h:Reply-To'] = reply
         if cc is not None and actual_recip is None:
             params['cc'] = [cc]
         requests.post(
