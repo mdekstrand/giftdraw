@@ -38,6 +38,7 @@ class Person(object):
 
 def read_family(f):
     people = []
+    blocks = set()
     lex = shlex.shlex(f, posix=True)
     tok = lex.get_token()
     while tok is not None:
@@ -47,20 +48,27 @@ def read_family(f):
             person = Person(name, email)
             people.append(person)
             print('Loaded person {}'.format(person))
+        elif tok == u'block':
+            em1 = lex.get_token()
+            em2 = lex.get_token()
+            blocks.add((em1, em2))
+            blocks.add((em2, em1))
         else:
             print('Unexpected token {}'.format(tok),
                   file=sys.stderr)
         tok = lex.get_token()
 
-    return people
+    blocks |= set((p1.email, p1.email) for p1 in people)
+
+    return (people, blocks)
 
 
-def draw_names(fam):
+def draw_names(fam, blocks):
     while True:
         f2 = fam.copy()
         random.shuffle(f2)
         alloc = list(zip(fam, f2))
-        if any(g == r for g,r in alloc):
+        if any((g.email, r.email) in blocks for g,r in alloc):
             print('could not draw names, trying again', file=sys.stderr)
         else:
             return alloc
@@ -109,10 +117,10 @@ def main():
     config = ConfigParser()
     config.read(args.config)
     with open(args.file) as f:
-        family = read_family(f)
+        family, blocks = read_family(f)
     with open(args.template) as f:
         template = Template(f.read())
-    alloc = draw_names(family)
+    alloc = draw_names(family, blocks)
     send_mails(alloc, template, config, args.send_to, args.verbose)
 
 
